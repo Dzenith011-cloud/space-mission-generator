@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Space Mission Generator</title>
+<style>
+body {
+  margin: 0;
+  padding: 30px 16px;
+  background: #081323;
+  color: #edf5ff;
+  font-family: Arial, sans-serif;
+}
+main {
+  max-width: 700px;
+  margin: auto;
+}
+h1 { color: #78d9ff; }
+.panel {
+  background: #13243b;
+  border: 1px solid #29415f;
+  border-radius: 16px;
+  padding: 22px;
+  margin-top: 18px;
+}
+label { display: block; margin-top: 16px; }
+select, button {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+select {
+  background: #081323;
+  color: white;
+  border: 1px solid #426080;
+}
+button {
+  background: #78d9ff;
+  color: #081323;
+  border: 0;
+  font-weight: bold;
+  cursor: pointer;
+}
+#result {
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+</style>
+</head>
+<body>
+<main>
+  <h1>🚀 Space Mission Generator</h1>
+  <p>Create your own fictional space exploration mission.</p>
+
+  <section class="panel">
+    <label for="planet">Destination</label>
+    <select id="planet">
+      <option>Mars</option>
+      <option>The Moon</option>
+      <option>Europa</option>
+      <option>Titan</option>
+      <option>Venus</option>
+      <option>Asteroid Belt</option>
+    </select>
+
+    <label for="type">Mission type</label>
+    <select id="type">
+      <option>Exploration</option>
+      <option>Scientific Research</option>
+      <option>Rescue Mission</option>
+      <option>Search for Life</option>
+      <option>Robotic Repair</option>
+    </select>
+
+    <label for="difficulty">Difficulty</label>
+    <select id="difficulty">
+      <option>Easy</option>
+      <option selected>Medium</option>
+      <option>Hard</option>
+    </select>
+
+    <button onclick="generateMission()">
+      Generate Mission
+    </button>
+    <button onclick="copyMission()">
+      Copy Mission
+    </button>
+  </section>
+
+  <section class="panel">
+    <h2>Mission Briefing</h2>
+    <div id="result">Your mission is waiting...</div>
+  </section>
+</main>
+
+<script>
+const missions = {
+  Exploration: [
+    "Map an unknown region and find a safe route.",
+    "Explore a mysterious crater and collect samples.",
+    "Investigate a strange structure detected from orbit."
+  ],
+  "Scientific Research": [
+    "Analyze an unusual signal from a remote sensor.",
+    "Study a possible deposit of water ice.",
+    "Collect atmospheric data before a storm arrives."
+  ],
+  "Rescue Mission": [
+    "Locate a missing research probe.",
+    "Deliver emergency supplies to a remote outpost.",
+    "Recover a rover that has stopped transmitting."
+  ],
+  "Search for Life": [
+    "Analyze samples for possible signs of ancient life.",
+    "Investigate an unexpected chemical pattern.",
+    "Collect a clean sample for further testing."
+  ],
+  "Robotic Repair": [
+    "Repair a damaged communications antenna.",
+    "Restore power to a scientific rover.",
+    "Diagnose a malfunctioning exploration robot."
+  ]
+};
+
+const challenges = {
+  Easy: [
+    "A sensor gives inconsistent readings.",
+    "One supply container is delayed."
+  ],
+  Medium: [
+    "Your communication window is shortened.",
+    "One instrument works at half capacity.",
+    "You must choose between two experiments."
+  ],
+  Hard: [
+    "A system failure threatens the mission.",
+    "Your reserve power is unexpectedly low.",
+    "Two problems occur at the same time."
+  ]
+};
+
+function randomItem(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+function generateMission() {
+  const planet = document.getElementById("planet").value;
+  const type = document.getElementById("type").value;
+  const difficulty = document.getElementById("difficulty").value;
+
+  const objective = randomItem(missions[type]);
+  const challenge = randomItem(challenges[difficulty]);
+
+  const time = {
+    Easy: "30 days",
+    Medium: "18 days",
+    Hard: "10 days"
+  }[difficulty];
+
+  const budget = {
+    Easy: "500 credits",
+    Medium: "300 credits",
+    Hard: "150 credits"
+  }[difficulty];
+
+  const report = [
+    "MISSION: " + objective,
+    "",
+    "DESTINATION: " + planet,
+    "MISSION TYPE: " + type,
+    "DIFFICULTY: " + difficulty,
+    "",
+    "PRIMARY OBJECTIVE:",
+    objective,
+    "",
+    "UNEXPECTED CHALLENGE:",
+    challenge,
+    "",
+    "TIME LIMIT: " + time,
+    "AVAILABLE BUDGET: " + budget,
+    "",
+    "SUCCESS CONDITION:",
+    "Complete the objective and return useful data safely."
+  ];
+
+  document.getElementById("result").textContent =
+    report.join("\n");
+}
+
+async function copyMission() {
+  const text = document.getElementById("result").textContent;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    alert("Mission copied!");
+  } catch (error) {
+    alert("Select the mission text and copy it manually.");
+  }
+}
+
+generateMission();
+</script>
+</body>
+</html>
